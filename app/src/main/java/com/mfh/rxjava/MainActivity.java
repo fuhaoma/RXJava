@@ -1,7 +1,6 @@
 package com.mfh.rxjava;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -18,7 +17,7 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
 
     @Bind(R.id.tv)
@@ -26,7 +25,6 @@ public class MainActivity extends AppCompatActivity {
     @Bind(R.id.activity_main)
     RelativeLayout activityMain;
     private Call<Bean> bean1;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,18 +40,16 @@ public class MainActivity extends AppCompatActivity {
                 addCallAdapterFactory(RxJavaCallAdapterFactory.create()).
                 build();
 
-//        Observable<Bean> bean =retrofit.create(ServiceAPI.class).getBean();
-
         bean1 = retrofit.create(ServiceAPI.class).getBean1();
         bean1.enqueue(new Callback<Bean>() {
             @Override
             public void onResponse(Call<Bean> call, Response<Bean> response) {
+                ToastHelp.toastLong("下载成功","123");
                 Log.i("AAA", "onNext: count"+response.body().getCount());
             }
 
             @Override
             public void onFailure(Call<Bean> call, Throwable t) {
-
             }
         });
 //        bean.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Subscriber<Bean>() {
@@ -78,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
     @OnClick(R.id.tv)
     public void onViewClicked() {
         bean1.cancel();
-        tv.setText(new Random().nextInt(11111111) + "111");
+        ToastHelp.toastLong(new Random().nextInt(11111111)+"","123");
     }
 
 }
